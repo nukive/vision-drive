@@ -12,7 +12,7 @@ coreDir = Path(__file__).parent.parent.parent
 sys.path.append(coreDir.abspath())
 
 from core.utils import *
-dim = (1280, 720)
+dim = (320, 240)
 
 class VideoStreamingTest:
     def __init__(self):

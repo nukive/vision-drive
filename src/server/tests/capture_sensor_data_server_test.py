@@ -34,7 +34,7 @@ class CaptureSensorDataTest(object):
                 text = "Distance: {0:.1f} cm".format(sensor_data)
                 print(text)
 
-                image = cv2.imread('src/server/tools/white.png')
+                image = cv2.imread('src/assets/white.png')
                 cv2.putText(image, text, (50, 400), font, 4, (255, 0, 0), 5, cv2.LINE_AA)
                 cv2.imshow('Sensor data', cv2.resize(image, (650, 175)))
                 
