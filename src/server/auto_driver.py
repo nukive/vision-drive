@@ -187,4 +187,4 @@ class ThreadServer():
         ultrasonic_sensor_thread.start()
 
 if __name__ == '__main__':
-    ThreadServer()
+    ThreadServer().serve()
