@@ -20,7 +20,6 @@ GPIO_TRIGGER = 23
 GPIO_ECHO = 24
 
 def measure():
-    # Send a 10us pulse to trigger
     GPIO.output(GPIO_TRIGGER, True)
     time.sleep(0.00001)
     GPIO.output(GPIO_TRIGGER, False)
@@ -40,7 +39,6 @@ def measure():
 
 
 def measure_average():
-    # returns the average.
     distance1 = measure()
     time.sleep(0.1)
 

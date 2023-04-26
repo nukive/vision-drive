@@ -57,7 +57,6 @@ class VideoStreamHandler(socketserver.StreamRequestHandler):
         stop_time = 0
         drive_time_after_stop = 0
 
-        # read the video frames one by one
         try:
             while True:
                 image_len = struct.unpack('<L', self.rfile.read(struct.calcsize('<L')))[0]
