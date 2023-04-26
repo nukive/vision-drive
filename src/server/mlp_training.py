@@ -7,10 +7,6 @@ from sklearn.model_selection import train_test_split
 import sys
 import time
 
-# todo: look at k-fold cross validation, understgand the use of tr/va/te, see how to employ these to ensure
-# good generalisation
-
-
 def retrieve_data_set():
     """Retrieve data from all the .npz files and aggregate it into a
     data set for mlp training"""

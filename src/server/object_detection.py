@@ -6,12 +6,7 @@ class ObjectDetection(object):
         self.green_light = False
 
     def detect(self, image, gray, classifier):
-        # Parameter needed for measuring dist using monocular vision
-        # Camera coordinates for the y-axis pertaining to point on the target object, P
         v = 0
-
-        # minimum difference between the lowest and highest pixel intesity values to proceed
-        # detection of traffic being on
         threshold = 150
 
         # Detect the objects
@@ -31,8 +26,6 @@ class ObjectDetection(object):
             else:
                 roi = gray[y+10: y+h-10, x+10: x+w-10]
 
-                # Apply a Gaussian blur through the image and find the brightest spot to determine if the
-                # light is on
                 mask = cv2.GaussianBlur(roi, (25,25), 0)
                 (minVal, maxVal, minLoc, maxLoc) = cv2.minMaxLoc(mask)
 
