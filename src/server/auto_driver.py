@@ -16,9 +16,9 @@ sys.path.append(coreDir.abspath())
 
 from core.utils import *
 from neural_network import *
+from rc_control import *
 from object_detection import ObjectDetection
 from distance_to_camera import DistanceToCamera
-from rc_control import RCControl
 
 
 # Ultrasonic sensor distance value

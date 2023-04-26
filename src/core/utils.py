@@ -2,14 +2,14 @@ import serial
 import serial.tools.list_ports
 
 # Server
-server_ip = '192.168.187.235'
+server_ip = '192.168.35.235'
 
 server_address = (server_ip, 45710)
 video_stream_address = (server_ip, 45720)
 sensor_data_stream_address = (server_ip, 45730)
 
 # Raspberry Pi
-rpi_ip = "192.168.187.78"
+rpi_ip = "192.168.35.78"
 rpi_port = 49220
 
 rpi = (rpi_ip, rpi_port)

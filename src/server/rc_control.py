@@ -1,3 +1,8 @@
+from queue import Queue
+
+control_event_queue = Queue()
+
+
 class RCControl(object):
     def __init__(self):
         print("Initiating RC control...")
