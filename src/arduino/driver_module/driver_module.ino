@@ -5,9 +5,9 @@ AF_DCMotor motor2(2, MOTOR12_64KHZ);
 AF_DCMotor motor3(3, MOTOR34_64KHZ);
 AF_DCMotor motor4(4, MOTOR34_64KHZ);
 
-int throttle_extra = 90;
-int throttle_full = 70;
-int throttle_half = 35;
+int throttle_max = 90;
+int throttle_normal = 70;
+int throttle_min = 35;
 
 void setMotorSpeed(uint8_t motor1speed, uint8_t motor2speed, uint8_t motor3speed, uint8_t motor4speed) {
   motor1.setSpeed(motor1speed);
@@ -17,7 +17,7 @@ void setMotorSpeed(uint8_t motor1speed, uint8_t motor2speed, uint8_t motor3speed
 }
 
 void setup() {
-  setMotorSpeed(throttle_full, throttle_full, throttle_full, throttle_full);
+  setMotorSpeed(throttle_normal, throttle_normal, throttle_normal, throttle_normal);
 
   Serial.begin(9600);
 }
@@ -42,7 +42,7 @@ void reset()
 
 void forward(bool isHybridCmd) {
   if(!isHybridCmd) {
-    setMotorSpeed(throttle_full, throttle_full, throttle_full, throttle_full);
+    setMotorSpeed(throttle_normal, throttle_normal, throttle_normal, throttle_normal);
     motor1.run(FORWARD);
     motor2.run(FORWARD);
   }
@@ -53,21 +53,21 @@ void forward(bool isHybridCmd) {
 
 void forward_right()
 {
-  setMotorSpeed(throttle_full, throttle_half, throttle_full, throttle_full);
+  setMotorSpeed(throttle_normal, throttle_min, throttle_normal, throttle_normal);
   motor1.run(FORWARD);
   forward(true);
 }
 
 void forward_left()
 {
-  setMotorSpeed(throttle_half, throttle_full, throttle_full, throttle_full);
+  setMotorSpeed(throttle_min, throttle_normal, throttle_normal, throttle_normal);
   motor2.run(FORWARD);
   forward(true);
 }
 
 void reverse(bool isHybridCmd) {
   if(!isHybridCmd) {
-    setMotorSpeed(throttle_full, throttle_full, throttle_full, throttle_full);
+    setMotorSpeed(throttle_normal, throttle_normal, throttle_normal, throttle_normal);
     motor3.run(BACKWARD);
     motor4.run(BACKWARD);
   }
@@ -78,28 +78,28 @@ void reverse(bool isHybridCmd) {
 
 void reverse_right()
 {
-  setMotorSpeed(throttle_full, throttle_full, throttle_half, throttle_full);
+  setMotorSpeed(throttle_normal, throttle_normal, throttle_min, throttle_normal);
   motor4.run(BACKWARD);
   reverse(true);
 }
 
 void reverse_left()
 {
-  setMotorSpeed(throttle_full, throttle_full, throttle_full, throttle_half);
+  setMotorSpeed(throttle_normal, throttle_normal, throttle_normal, throttle_min);
   motor3.run(BACKWARD);
   reverse(true);
 }
 
 void right()
 {
-  setMotorSpeed(throttle_extra, throttle_full, throttle_full, throttle_extra);
+  setMotorSpeed(throttle_max, throttle_normal, throttle_normal, throttle_max);
   motor1.run(FORWARD);
   motor4.run(FORWARD);
 }
 
 void left()
 {
-  setMotorSpeed(throttle_full, throttle_extra, throttle_extra, throttle_full);
+  setMotorSpeed(throttle_normal, throttle_max, throttle_max, throttle_normal);
   motor2.run(FORWARD);
   motor3.run(FORWARD);
 }
