@@ -7,6 +7,7 @@ server_ip = '192.168.35.235'
 server_address = (server_ip, 45710)
 video_stream_address = (server_ip, 45720)
 sensor_data_stream_address = (server_ip, 45730)
+control_data_stream_address = (server_ip, 45740)
 
 # Raspberry Pi
 rpi_ip = "192.168.35.78"
