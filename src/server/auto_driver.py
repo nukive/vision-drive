@@ -23,8 +23,10 @@ from distance_to_camera import DistanceToCamera
 
 
 # Ultrasonic sensor distance value
-obstruction = threading.Event()
+# obstruction = threading.Event()
+obstruction = Queue()
 image_data = Queue()
+
 
 class VideoStreamHandler(socketserver.StreamRequestHandler):
     # Cascade Classifiers
@@ -44,6 +46,7 @@ class VideoStreamHandler(socketserver.StreamRequestHandler):
     # Create a neural network
     model = NeuralNetwork()
 
+    obstruction.put(False)
     car = RCControl()
 
     def handle(self):
@@ -95,7 +98,8 @@ class VideoStreamHandler(socketserver.StreamRequestHandler):
                 prediction = self.model.predict(image_array)
 
                 # Check for stop conditions
-                if obstruction.is_set():
+                # if obstruction.is_set():
+                if obstruction.get():
                     # Front collision avoidance
                     self.car.stop()
                     print("Stopping, obstacle in front!")
@@ -159,10 +163,12 @@ class SensorStreamHandler(socketserver.BaseRequestHandler):
                 self.data = self.request.recv(1024)
                 self.sensor_data = round(float(self.data), 1)
 
-                if self.sensor_data < 30:
-                    obstruction.set()
+                if self.sensor_data < 30 or self.sensor_data > 500:
+                    # obstruction.set()
+                    obstruction.put(True)
                 else:
-                    obstruction.clear()
+                    # obstruction.clear()
+                    obstruction.put(False)
 
                 print(f"Dist: {self.sensor_data}")
         finally:
