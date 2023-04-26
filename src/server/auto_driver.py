@@ -7,6 +7,7 @@ import numpy as np
 import threading
 import socketserver
 import struct
+from queue import Queue
 
 import sys
 from path import Path
@@ -16,7 +17,7 @@ sys.path.append(coreDir.abspath())
 
 from core.utils import *
 from neural_network import *
-from rc_control import *
+from rc_control import (RCControl, control_prediction)
 from object_detection import ObjectDetection
 from distance_to_camera import DistanceToCamera
 
@@ -168,6 +169,18 @@ class SensorStreamHandler(socketserver.BaseRequestHandler):
             print("Connection closed on sensor server thread!")
 
 
+class ControlStreamHandler(socketserver.StreamRequestHandler):    
+    def handle(self) -> None:
+        try:
+            while True:
+                if(control_prediction.empty()): continue
+
+                self.connection.send(str(control_prediction.get()).encode())
+        finally:
+
+            print("Connection closed on control server thread!")
+
+
 class ThreadServer():
     def server_video_thread(host, port):
         server = socketserver.TCPServer((host, port), VideoStreamHandler)
@@ -177,6 +190,10 @@ class ThreadServer():
         server = socketserver.TCPServer((host, port), SensorStreamHandler)
         server.serve_forever()
 
+    def server_control_thread(host, port):
+        server = socketserver.TCPServer((host, port), ControlStreamHandler)
+        server.serve_forever()
+
     @classmethod
     def serve(cls):
         video_thread = threading.Thread(target=cls.server_video_thread, args=video_stream_address)
@@ -184,6 +201,9 @@ class ThreadServer():
 
         ultrasonic_sensor_thread = threading.Thread(target=cls.ultrasonic_server_thread, args=sensor_data_stream_address)
         ultrasonic_sensor_thread.start()
+
+        control_thread = threading.Thread(target=cls.server_control_thread, args=control_data_stream_address)
+        control_thread.start()
 
         while True:
             if (not image_data.empty()): cv2.imshow('Video', image_data.get())
