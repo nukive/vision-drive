@@ -5,8 +5,9 @@ AF_DCMotor motor2(2, MOTOR12_64KHZ);
 AF_DCMotor motor3(3, MOTOR34_64KHZ);
 AF_DCMotor motor4(4, MOTOR34_64KHZ);
 
-int throttle_full = 150;
-int throttle_half = 75;
+int throttle_extra = 90;
+int throttle_full = 70;
+int throttle_half = 35;
 
 void setMotorSpeed(uint8_t motor1speed, uint8_t motor2speed, uint8_t motor3speed, uint8_t motor4speed) {
   motor1.setSpeed(motor1speed);
@@ -91,14 +92,14 @@ void reverse_left()
 
 void right()
 {
-  setMotorSpeed(throttle_full, throttle_full, throttle_full, throttle_full);
+  setMotorSpeed(throttle_extra, throttle_full, throttle_full, throttle_extra);
   motor1.run(FORWARD);
   motor4.run(FORWARD);
 }
 
 void left()
 {
-  setMotorSpeed(throttle_full, throttle_full, throttle_full, throttle_full);
+  setMotorSpeed(throttle_full, throttle_extra, throttle_extra, throttle_full);
   motor2.run(FORWARD);
   motor3.run(FORWARD);
 }
