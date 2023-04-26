@@ -1,6 +1,3 @@
-"""collect_training_data.py: Collects the training images and classifies them based
-on the user car control"""
-
 import cv2
 import numpy as np
 import socket

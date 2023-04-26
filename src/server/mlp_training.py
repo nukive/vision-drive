@@ -1,5 +1,3 @@
-"""mlp_training.py: Neural Network training using Back-propagation"""
-
 import cv2
 import glob
 import numpy as np

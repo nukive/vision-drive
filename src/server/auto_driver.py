@@ -1,6 +1,3 @@
-"""auto_driver.py: Multi-threaded server program that receives jpeg video frames, ultrasonic
-sensor data and allows the RC car to drive itself with front collision avoidance."""
-
 import cv2
 import math
 import numpy as np
