@@ -23,6 +23,7 @@ from distance_to_camera import DistanceToCamera
 
 # Ultrasonic sensor distance value
 obstruction = threading.Event()
+image_data = Queue()
 
 class VideoStreamHandler(socketserver.StreamRequestHandler):
     # Cascade Classifiers
@@ -71,7 +72,7 @@ class VideoStreamHandler(socketserver.StreamRequestHandler):
                 # Reshape ROI
                 image_array = roi.reshape(1, 38400).astype(np.float32)
 
-                cv2.imshow('Video', image)
+                image_data.put(image)
 
                 # Object detection
                 v_stop = self.obj_detection.detect(image, gray, self.stop_classifier)
@@ -139,8 +140,6 @@ class VideoStreamHandler(socketserver.StreamRequestHandler):
                         if drive_time_after_stop > 5:
                             stop_sign_active = True
 
-                if (cv2.waitKey(5) & 0xFF) == ord('q'):
-                    break
 
             cv2.destroyAllWindows()
 
@@ -185,6 +184,14 @@ class ThreadServer():
 
         ultrasonic_sensor_thread = threading.Thread(target=cls.ultrasonic_server_thread, args=sensor_data_stream_address)
         ultrasonic_sensor_thread.start()
+
+        while True:
+            if (not image_data.empty()): cv2.imshow('Video', image_data.get())
+
+            if (cv2.waitKey(5) & 0xFF) == ord('q'):
+                    break
+
+
 
 if __name__ == '__main__':
     ThreadServer().serve()
