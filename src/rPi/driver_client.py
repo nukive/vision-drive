@@ -14,6 +14,7 @@ coreDir = Path(__file__).parent.parent
 sys.path.append(coreDir.abspath())
 
 from core.utils import *
+from car_control import CarControl
 
 GPIO_TRIGGER = 23
 GPIO_ECHO = 24
@@ -49,15 +50,6 @@ def measure_average():
     distance3 = measure()
     distance = (distance1 + distance2 + distance3) / 3
     return distance
-
-class CarControl:
-    def process_control_input(self) -> None:
-        control_socket = socket.socket()
-        control_socket.connect(control_data_stream_address)
-        
-        while True:
-            data = control_socket.recv(1024)
-            print("Control ===>>> ", data)
 
 class ThreadServer:
     car_control = CarControl()
@@ -129,7 +121,7 @@ class ThreadServer:
         video_thread = threading.Thread(target=cls.stream_video, args=[cls])
         video_thread.start()
 
-        control_thread = threading.Thread(target=cls.car_control.process_control_input, args=[cls])
+        control_thread = threading.Thread(target=cls.car_control.process_control_input)
         control_thread.start()
 
 
