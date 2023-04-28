@@ -95,7 +95,7 @@ class VideoStreamHandler(socketserver.StreamRequestHandler):
 
                 # Check for stop conditions
                 # if obstruction.is_set():
-                if obstruction.get():
+                if False:
                     # Front collision avoidance
                     self.car.stop()
                     print("Stopping, obstacle in front!")

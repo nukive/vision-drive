@@ -17,7 +17,7 @@ def retrieve_data_set():
     label_array = np.zeros((1, 4), 'float')
 
     # Retrieve a list of pathname that matches the below expr
-    data_set = glob.glob("data_set/*.npz")
+    data_set = glob.glob("src/server/data_set/*.npz")
 
     if not data_set:
         print("No data set in directory, exiting!")
@@ -79,5 +79,5 @@ if __name__ == '__main__':
     print("Test set error: {0:.2f}".format(test_mean_sq_error * 100))
 
     # Save model
-    model.save("mlp_xml/mlp_{0}.xml".format(str(int(time.time()))))
+    model.save("src/server/mlp_xml/mlp_{0}.xml".format(str(int(time.time()))))
 

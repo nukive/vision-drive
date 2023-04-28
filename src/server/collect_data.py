@@ -19,7 +19,7 @@ class CollectData(object):
     def __init__(self):
         # Open a socket and accept a single connection in read mode
         self.sock = socket.socket()
-        self.sock.bind(server_address)
+        self.sock.bind(video_stream_address)
         self.sock.listen(1)
 
         self.connection = self.sock.accept()[0].makefile('rb')
