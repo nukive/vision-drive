@@ -1,7 +1,7 @@
 import cv2
 
 # Global variables
-mlp_model = 'src/server/mlp_xml/success_model_001.xml'
+mlp_model = 'src/server/mlp_xml/mlp_1682865689.xml'
 stop_cascade = 'src/server/cascade_classifiers/stop_sign.xml'
 traffic_cascade = 'src/server/cascade_classifiers/traffic_light.xml'
 
