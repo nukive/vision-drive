@@ -23,6 +23,7 @@ from distance_to_camera import DistanceToCamera
 # obstruction = threading.Event()
 obstruction = Queue()
 image_data = Queue()
+roi_data = Queue()
 
 
 class VideoStreamHandler(socketserver.StreamRequestHandler):
@@ -67,12 +68,14 @@ class VideoStreamHandler(socketserver.StreamRequestHandler):
                 image = cv2.imdecode(np.fromstring(recv_bytes, dtype=np.uint8), cv2.IMREAD_COLOR)
 
                 # Get ROI
-                roi = gray[120:240, :]
+                # roi = gray[120:240, :]
+                roi = gray[50:170, :]
 
                 # Reshape ROI
                 image_array = roi.reshape(1, 38400).astype(np.float32)
 
                 image_data.put(image)
+                roi_data.put(roi)
 
                 # Object detection
                 v_stop = self.obj_detection.detect(image, gray, self.stop_classifier)
@@ -95,7 +98,10 @@ class VideoStreamHandler(socketserver.StreamRequestHandler):
 
                 # Check for stop conditions
                 # if obstruction.is_set():
-                if False:
+                # if False:
+                if obstruction.empty(): continue
+                
+                if obstruction.get() is True:
                     # Front collision avoidance
                     self.car.stop()
                     print("Stopping, obstacle in front!")
@@ -159,7 +165,8 @@ class SensorStreamHandler(socketserver.BaseRequestHandler):
                 self.data = self.request.recv(1024)
                 self.sensor_data = round(float(self.data), 1)
 
-                if self.sensor_data < 30 or self.sensor_data > 500:
+                if self.sensor_data < 30:
+                # if self.sensor_data < 30 or self.sensor_data > 500:
                     # obstruction.set()
                     obstruction.put(True)
                 else:
@@ -209,6 +216,8 @@ class ThreadServer():
 
         while True:
             if (not image_data.empty()): cv2.imshow('Video', image_data.get())
+
+            if(not roi_data.empty()): cv2.imshow('ROI', roi_data.get())
 
             if (cv2.waitKey(5) & 0xFF) == ord('q'):
                     break
