@@ -30,7 +30,7 @@ class CarControl:
     def control_pause_event(self):
         while True:
             is_set = pause_event.is_set()
-            print("pause state ===>>> ", is_set)
+            # print("pause state ===>>> ", is_set)
 
             time.sleep(0.7)
 
@@ -50,6 +50,7 @@ class CarControl:
         try:
             while True:
                 data = control_socket.recv(1024)
+                print("Prediction received ===>>> ", data)
 
                 if(pause_event.is_set()):
                     self.stop_car()
