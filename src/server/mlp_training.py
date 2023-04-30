@@ -18,6 +18,7 @@ def retrieve_data_set():
 
     # Retrieve a list of pathname that matches the below expr
     data_set = glob.glob("src/server/data_set/*.npz")
+    print("Data set got ===>>> ", data_set)
 
     if not data_set:
         print("No data set in directory, exiting!")
