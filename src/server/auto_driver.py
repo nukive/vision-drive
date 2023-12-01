@@ -25,6 +25,11 @@ obstruction = Queue()
 image_data = Queue()
 roi_data = Queue()
 
+obstruction_stop = 0
+sign_stop = 1
+light_stop = 2
+connection_close_stop = 3
+
 
 class VideoStreamHandler(socketserver.StreamRequestHandler):
     # Cascade Classifiers
@@ -103,12 +108,13 @@ class VideoStreamHandler(socketserver.StreamRequestHandler):
                 
                 if obstruction.get() is True:
                     # Front collision avoidance
-                    self.car.stop()
+                    self.car.stop(obstruction_stop)
                     print("Stopping, obstacle in front!")
 
-                elif 0.0 < self.d_stop < 30.0 and stop_sign_active:
-                    print('Stop sign ahead. Stopping...')
-                    self.car.stop()
+                elif v_stop > 1 and stop_sign_active:
+                # elif 0.0 < self.d_stop < 100.0 and stop_sign_active:
+                    # print('Stop sign ahead. Stopping...')
+                    self.car.stop(sign_stop)
 
                     # Stop for 5 seconds
                     if stop_flag is False:
@@ -117,7 +123,7 @@ class VideoStreamHandler(socketserver.StreamRequestHandler):
 
                     stop_finish = cv2.getTickFrequency()
                     stop_time = stop_finish - stop_start
-                    print(f"Stop time: {stop_time}")
+                    # print(f"Stop time: {stop_time}")
 
                     # Waited 5 seconds, continue driving
                     if stop_time > 5:
@@ -128,7 +134,7 @@ class VideoStreamHandler(socketserver.StreamRequestHandler):
                 elif 0.0 < self.d_light < 30.0:
                     if self.obj_detection.red_light:
                         print("Red light")
-                        self.car.stop()
+                        self.car.stop(light_stop)
                     elif self.obj_detection.green_light:
                         print("Green light")
                         pass
@@ -151,7 +157,7 @@ class VideoStreamHandler(socketserver.StreamRequestHandler):
             cv2.destroyAllWindows()
 
         finally:
-            self.car.stop()
+            self.car.stop(connection_close_stop)
             print("Connection closed on the server video thread!")
 
 
@@ -173,7 +179,7 @@ class SensorStreamHandler(socketserver.BaseRequestHandler):
                     # obstruction.clear()
                     obstruction.put(False)
 
-                print(f"Dist: {self.sensor_data}")
+                # print(f"Dist: {self.sensor_data}")
         finally:
             print("Connection closed on sensor server thread!")
 

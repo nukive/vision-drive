@@ -17,7 +17,7 @@ class ObjectDetection(object):
             cv2.rectangle(image, (x+5, y+5), (x+w-5, y+h-5), (255, 255, 255), 2)
             v = y + h - 5
 
-            print(f"width/height is: {w/h}")
+            # print(f"width/height is: {w/h}")
             # Stop sign
             if w / h == 1:
                 cv2.putText(image, 'STOP', (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)

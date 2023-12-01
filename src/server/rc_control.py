@@ -1,7 +1,7 @@
 from queue import Queue
 
 control_prediction = Queue()
-
+prediction_default_stop = 4
 
 class RCControl(object):
     def __init__(self):
@@ -12,22 +12,22 @@ class RCControl(object):
         if prediction == 0:
             # self.ser.write(b'6')
             control_prediction.put("Left")
-            print("Left")
+            # print("Left")
 
         elif prediction == 1:
             # self.ser.write(b'5')
             control_prediction.put("Right")
-            print("Right")
+            # print("Right")
 
         elif prediction == 2:
             # self.ser.write(b'1')
             control_prediction.put("Forward")
-            print("Forward")
+            # print("Forward")
 
         else:
-            self.stop()
+            self.stop(prediction_default_stop)
 
-    def stop(self):
+    def stop(self, stop_index):
         control_prediction.put("Stop")
-        print("Stop")
+        print("Stop, index ===>>> ", stop_index)
         # self.ser.write(b'0')
